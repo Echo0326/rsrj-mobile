@@ -1,0 +1,16 @@
+//node.js获取本机IP地址
+const os = require('os');
+const ifaces = os.networkInterfaces();
+let locatIp = '';
+for (let dev in ifaces) {
+  if (dev === '本地连接') {
+    for (let j = 0; j < ifaces[dev].length; j++) {
+      if (ifaces[dev][j].family === 'IPv4') {
+        locatIp = ifaces[dev][j].address;
+        break;
+      }
+    }
+  }
+}
+module.exports=locatIp
+
