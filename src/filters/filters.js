@@ -2,7 +2,6 @@
 export default {
   //将时间差value转化为日期对象
   formatDate: function (value) {
-    console.log("===========")
     if (!value) return ''
     value = new Date(value)
     return value

@@ -10,7 +10,7 @@ import './router/router-change'
 /*挂载vue原型链上的属性*/
 import './vue-prototype'
 /*挂载需要用的第三方组件*/
-import './vue-use'
+import './vue-use-component'
 new Vue({
   el: "#app",
   render: h => h(App),

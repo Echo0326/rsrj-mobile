@@ -1,6 +1,6 @@
 
 import api from './api'
 
-export const reqSign_get=()=>(
-  api.post('/api/sign_get',{},true)
+export const reqWeiXin=(url,originid)=>(
+  api.post('/api/sign_get',{url,originid},false)
 )
