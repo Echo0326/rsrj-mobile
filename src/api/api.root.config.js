@@ -3,7 +3,7 @@ let base_api_url,base_static_url,base_img_url,originId
 const root=process.env.NODE_ENV
 
 if (root==='production'){
-  base_api_url="https://uatmarketing.vlinker.com.cn"
+  base_api_url="https://marketing.vlinker.com.cn"
   base_static_url="https://img.vlinker.com.cn/mpwechat"
   base_img_url="https://img.vlinker.com.cn"
   originId='gh_1a6d176de937'

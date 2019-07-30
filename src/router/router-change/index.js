@@ -1,5 +1,6 @@
 //路由前后需要处理的事情
 import router from '../index'
+import {getWeiXinConfig} from "../../api/weixin"
 /* 路由发生变化修改页面title */
 router.beforeEach((to, from, next) => {
   if (to.meta.title) {
@@ -8,7 +9,11 @@ router.beforeEach((to, from, next) => {
   next()
 })
 /*路由变化之后处理百度统计*/
-router.afterEach(( to, from, next ) => {
+router.afterEach(( to, from ) => {
+  //加载通用微信分享
+  if (!to.meta.wxJsSdk){
+    getWeiXinConfig()
+  }
   setTimeout(()=>{
     let _hmt = _hmt || [];
     (function() {
@@ -21,4 +26,5 @@ router.afterEach(( to, from, next ) => {
       s.parentNode.insertBefore(hm, s)
     })();
   },50);
+
 } );

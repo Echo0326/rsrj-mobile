@@ -1,67 +1,91 @@
+import Vue from 'vue'
 import {BASE_API_URL} from './api.root.config'
 import md5 from 'blueimp-md5'
 import axios from 'axios'
 import qs from 'qs'
-import { Indicator } from 'mint-ui';
+import  { LoadingPlugin,ToastPlugin  } from 'vux'
+Vue.use(LoadingPlugin,ToastPlugin )
 //request请求
 function request(url="", method="GET", data={},isLoading=false ) {
   return new Promise((resolve, reject) => {
-    let index,promise
+    let promise
     if (isLoading){
-      Indicator.open({
-        text: '加载中...',
-        spinnerType: 'snake'
-      })
+      Vue.$vux.loading.show({text: 'loading'})
     }
     if (method==="GET"){
-      //get请求拼接字符串
-      let dataStr = ''
-      //处理url本身带过来的参数
-      if (url.indexOf('?')>-1){
-        dataStr+=url.split('?')[1]+'&'
-        url=url.split('?')[0]
-      }
-      //拼接data里面的参数
-      Object.keys(data).forEach(key => {
-        dataStr += key + '=' + data[key] + '&'
-      })
-      if (dataStr !== '') {
-        dataStr = dataStr.substring(0, dataStr.lastIndexOf('&'))
-        url = url + '?' + dataStr
-      }
-      promise=axios.get(BASE_API_URL+url)
+      promise=axios({method: 'GET', url: BASE_API_URL+url, params:data})
     }else {
-      promise=axios.post(BASE_API_URL+url,qs.stringify(data))
+      promise=axios({method:'POST',url:BASE_API_URL+url,data:qs.stringify(data)})
     }
     promise.then(res => {
-      Indicator.close()
+      Vue.$vux.loading.hide()
       if (res.data.code===100){
         resolve(res.data)
+      }else if (res.data.msg) {
+        layer.msg(res.data.msg.toString())
+        reject(res.data)
       }else {
-        layer.msg(res.data.msg)
+        layer.msg("请求出错，请稍后再试")
         reject(res)
       }
     }).catch(error => {
-      Indicator.close()
-      layer.msg("请求出错，请稍后再试！")
+      Vue.$vux.loading.hide()
+      layer.msg("请求出错，请稍后再试")
+      reject(error)
+    })
+  })
+}
+//上传文件
+function uploadFiles(url="", data={},isLoading=false) {
+  return new Promise((resolve, reject) => {
+    let promise
+    if (isLoading){
+      Vue.$vux.loading.show({text: 'loading'})
+    }
+    let params=getAuth()
+    data=Object.assign(params,data)
+    let formData=new FormData()
+    Object.keys(data).forEach(key => {
+      formData.append(key,data[key])
+    })
+    promise=axios({
+      headers: { "Content-Type": "multipart/form-data" },
+      method: 'POST',
+      url:BASE_API_URL+url,
+      data:formData
+    })
+    promise.then(res => {
+      Vue.$vux.loading.hide()
+      if (res.data.code===100){
+        resolve(res.data)
+      }else if (res.data.msg) {
+        layer.msg(res.data.msg.toString())
+        reject(res.data)
+      }else {
+        layer.msg("文件上传失败，请稍后再试！")
+        reject(res)
+      }
+    }).catch(error => {
+      Vue.$vux.loading.hide()
+      layer.msg("文件上传失败，请稍后再试！")
       reject(error)
     })
   })
 }
 //get请求
 function get(url,isLoading=false) {
-  let params=getCode()
+  let params=getAuth()
   return request(url,"GET", params,isLoading)
 }
 //post请求
 function post(url,data,isLoading=false) {
-  let params=getCode()
+  let params=getAuth()
   if (data){
     params=Object.assign(params,data)
   }
   return request(url,"POST", params,isLoading)
 }
-function getCode() {
+function getAuth() {
   let timestamp=new Date().valueOf()
   let expires_in=1800
   let secret_key='40809bd2cadc8a1ad40c777fba04bbaa';
@@ -73,5 +97,6 @@ function getCode() {
 export default {
   request,
   get,
-  post
+  post,
+  uploadFiles
 }

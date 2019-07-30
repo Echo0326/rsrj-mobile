@@ -19,6 +19,9 @@
     },
     components:{
       XButton
+    },
+    mounted(){
+      layer.msg('hello,layer!')
     }
   }
 </script>
