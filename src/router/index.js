@@ -4,8 +4,14 @@
 
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+
+
 //路由模块
-import HomerRouter from '../pages/home/homeRouter'
+import HomeRouter from '../pages/home/homeRouter'
+import ProductRouter from "../pages/product/productRoute"
+import ServiceRouter from "../pages/service/serviceRoute"
+import AboutUsRoute from "../pages/aboutUs/aboutUsRoute"
+import ContactUsRoute from "../pages/contactUs/contactUsRoute"
 import EmptyRouter from '../pages/empty/emptyRouter'
 
 //声明使用路由
@@ -15,7 +21,11 @@ export default new VueRouter({
   //配置路由
   mode: 'history',
   routes:[
-    ...HomerRouter,
+    ...HomeRouter,
+    ...ProductRouter,
+    ...ServiceRouter,
+    ...AboutUsRoute,
+    ...ContactUsRoute,
     ...EmptyRouter
   ],
   scrollBehavior (to, from, savedPosition) {

@@ -3,7 +3,8 @@ export default [
   {
     path:'/home',
     component:Home,
-    meta:{
+    name:'Home',
+    meta: {
       title:'主页'
     }
   },

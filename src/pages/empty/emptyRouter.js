@@ -3,7 +3,8 @@ export default [
   {
     path:'/empty',
     component:Empty,
-    meta:{
+    name:'empty',
+    meta: {
       title:'抱歉，出错了，找不到页面'
     }
   },

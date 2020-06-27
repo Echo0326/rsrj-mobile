@@ -7,12 +7,7 @@
 <script>
   import Header from "../../components/Header"
   export default {
-    name: "Home",
-    data(){
-      return{
-        t:1547023368375
-      }
-    },
+    name: "Product",
     components:{
       Header
     }
